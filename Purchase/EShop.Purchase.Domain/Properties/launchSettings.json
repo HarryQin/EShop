@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "EShop.Purchasing.Domain": {
+      "commandName": "Project"
+    }
+  }
+}

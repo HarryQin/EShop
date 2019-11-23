@@ -1,6 +1,17 @@
 {
   "ReRoutes": [
     {
+      "DownstreamPathTemplate": "/Identity-api/{catchAll}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "eshop-identity-dev.azurewebsites.net",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/Identity-api/{catchAll}"
+    },
+    {
       "DownstreamPathTemplate": "/Catalog-api/{catchAll}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -12,15 +23,15 @@
       "UpstreamPathTemplate": "/Catalog-api/{catchAll}"
     },
     {
-      "DownstreamPathTemplate": "/Identity-api/{catchAll}",
+      "DownstreamPathTemplate": "/Purchase-api/{catchAll}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
-          "Host": "eshop-identity-dev.azurewebsites.net",
+          "Host": "eshop-purchase-dev.azurewebsites.net",
           "Port": 80
         }
       ],
-      "UpstreamPathTemplate": "/Identity-api/{catchAll}"
+      "UpstreamPathTemplate": "/Purchase-api/{catchAll}"
     }
   ],
   "GlobalConfiguration": {

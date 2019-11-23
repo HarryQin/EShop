@@ -1,7 +1,7 @@
 {
   "ReRoutes": [
     {
-      "DownstreamPathTemplate": "/Catalog-api/{catchAll}",
+      "DownstreamPathTemplate": "/Identity-api/{catchAll}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -9,18 +9,29 @@
           "Port": 7001
         }
       ],
-      "UpstreamPathTemplate": "/Catalog-api/{catchAll}"
+      "UpstreamPathTemplate": "/Identity-api/{catchAll}"
     },
     {
-      "DownstreamPathTemplate": "/Identity-api/{catchAll}",
+      "DownstreamPathTemplate": "/Catalog-api/{catchAll}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7006
+          "Port": 7002
         }
       ],
-      "UpstreamPathTemplate": "/Identity-api/{catchAll}"
+      "UpstreamPathTemplate": "/Catalog-api/{catchAll}"
+    },
+    {
+      "DownstreamPathTemplate": "/Purchase-api/{catchAll}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7003
+        }
+      ],
+      "UpstreamPathTemplate": "/Catalog-api/{catchAll}"
     }
   ],
   "GlobalConfiguration": {
