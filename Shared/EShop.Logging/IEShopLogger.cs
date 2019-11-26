@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EShop.Logging
 {
-    interface IEShopLogger<out T> : ILogger<T>
+    public interface IEShopLogger<out T> : ILogger<T>
     {
     }
 }

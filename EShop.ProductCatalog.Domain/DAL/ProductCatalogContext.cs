@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using EShop.ProductCatalog.Domain.Models;
+﻿using EShop.ProductCatalog.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EShop.ProductCatalog.Domain.DAL
 {
@@ -21,8 +17,6 @@ namespace EShop.ProductCatalog.Domain.DAL
             builder.Entity<Product>().HasKey(t => t.Id);
             builder.Entity<Product>().Property(t => t.Id).HasColumnName("Id");
             builder.Entity<Product>().Property(t => t.Name).HasColumnName("Name");
-
-
         }
     }
 }
