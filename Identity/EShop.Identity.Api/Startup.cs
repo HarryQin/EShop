@@ -30,7 +30,7 @@ namespace EShop.Identity.Api
             services.AddSingleton(typeof(IEShopLogger<>), typeof(EShopLogger<>));
             
             var builder = new SqlConnectionStringBuilder(
-                Configuration.GetConnectionString("DBConnection"));
+                Configuration.GetConnectionString("Default"));
 
             services.AddDbContext<CustomerContext>(options =>
                 options.UseSqlServer(builder.ConnectionString)
