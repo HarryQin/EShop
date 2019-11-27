@@ -4,5 +4,17 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Shared\EShop.Logging\EShop.Logging.csproj" />
+    <ProjectReference Include="..\..\Shared\EShop.Utility\EShop.Utility.csproj" />
+    <ProjectReference Include="..\EShop.Purchase.Domain\EShop.Purchasing.Domain.csproj" />
+  </ItemGroup>
+
 
 </Project>

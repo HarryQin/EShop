@@ -6,7 +6,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7001
+          "Port": 5001
         }
       ],
       "UpstreamPathTemplate": "/Identity-api/{catchAll}"
@@ -17,7 +17,7 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7002
+          "Port": 5002
         }
       ],
       "UpstreamPathTemplate": "/Catalog-api/{catchAll}"
@@ -28,13 +28,13 @@
       "DownstreamHostAndPorts": [
         {
           "Host": "localhost",
-          "Port": 7003
+          "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "/Catalog-api/{catchAll}"
+      "UpstreamPathTemplate": "/Purchase-api/{catchAll}"
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:7000"
+    "BaseUrl": "http://localhost:5000"
   }
 }

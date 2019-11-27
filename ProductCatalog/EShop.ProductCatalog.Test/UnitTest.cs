@@ -1,13 +1,18 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace EShop.Purchasing.Test
+namespace EShop.ProductCatalog.Test
 {
     [TestClass]
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestGetProduct()
         {
         }
+        [TestMethod]
+        public void TestGetProducts()
+        {
+        }
+
     }
 }

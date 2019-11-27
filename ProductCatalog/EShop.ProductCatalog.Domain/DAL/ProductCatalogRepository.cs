@@ -2,6 +2,7 @@
 using EShop.ProductCatalog.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace EShop.ProductCatalog.Domain.DAL
@@ -16,11 +17,11 @@ namespace EShop.ProductCatalog.Domain.DAL
         }
         public Product GetProduct(int id)
         {
-            throw new NotImplementedException();
+            return _context.Products.Where(x => x.Id == id).First();
         }
         public List<Product> GetAllProducts()
         {
-            throw new NotImplementedException();
+            return _context.Products.ToList();
         }
         public void Dispose()
         {

@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Text;
 using EShop.Purchasing.Domain.Interfaces;
 using EShop.Purchasing.Domain.Models;
+using System.Linq;
 
 namespace EShop.Purchasing.Domain.DAL
 {
-    class PurchaseRepository : IPurchaseRepository, IDisposable
+    public class PurchaseRepository : IPurchaseRepository, IDisposable
     {
         protected readonly PurchaseContext _context;
 
@@ -15,19 +16,36 @@ namespace EShop.Purchasing.Domain.DAL
         {
             _context = context;
         }
-        public Purchase GetPurchase(string id)
+        public int AddPurchase(Purchase purchase) 
         {
-            throw new NotImplementedException();
+            _context.Add(purchase);
+            _context.SaveChanges();
+            return purchase.Id;
         }
-
-        public bool DeletePurchase(string id)
+        public Purchase GetPurchase(int id)
         {
-            throw new NotImplementedException();
+            return _context.Purchases.Where(x => x.Id == id).First();
         }
-
-        public List<Purchase> GetAllPurchases()
+        public List<Purchase> GetPurchases(int userId)
         {
-            throw new NotImplementedException();
+            var purchases = _context.Purchases.Where(x => x.UserId == userId);
+            if (purchases.Count() == 0)
+            {
+                return new List<Purchase>();
+            }
+            else 
+            {
+                return purchases.ToList();
+            }
+        }
+        public void DeletePurchase(int id)
+        {
+            var purchase = _context.Purchases.Where(x => x.Id == id && !x.IsDeleted).First();
+            if (purchase != null) 
+            {
+                purchase.IsDeleted = true;
+                _context.SaveChanges();
+            }
         }
         public void Dispose()
         {

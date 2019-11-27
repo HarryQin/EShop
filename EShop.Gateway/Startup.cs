@@ -22,21 +22,12 @@ namespace EShop.Gateway
             Configuration = configuration;
         }
 
-        readonly string EShopOrigins = "_eShopOrigins";
-
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options =>
-            {
-                options.AddPolicy(EShopOrigins,
-                    builder => builder.AllowAnyOrigin()
-                                    .AllowAnyMethod()
-                                    .AllowAnyHeader()
-                                    .AllowCredentials());
-            });
+            services.AddCors();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddOcelot(Configuration);
@@ -55,10 +46,12 @@ namespace EShop.Gateway
                 app.UseHsts();
             }
 
-            app.UseCors(EShopOrigins);
+            app.UseCors(x => x
+              .AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader());
 
             app.UseHttpsRedirection();
-            app.UseMvc();
             await app.UseOcelot().ConfigureAwait(true);
         }
     }

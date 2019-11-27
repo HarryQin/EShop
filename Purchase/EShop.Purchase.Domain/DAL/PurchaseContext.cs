@@ -21,8 +21,7 @@ namespace EShop.Purchasing.Domain.DAL
             builder.Entity<Purchase>().Property(t => t.Id).HasColumnName("Id");
             builder.Entity<Purchase>().Property(t => t.UserId).HasColumnName("UserId");
             builder.Entity<Purchase>().Property(t => t.ProductId).HasColumnName("ProductId");
-
-
+            builder.Entity<Purchase>().Property(t => t.IsDeleted).HasColumnName("IsDeleted");
         }
     }
 }

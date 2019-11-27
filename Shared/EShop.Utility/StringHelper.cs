@@ -2,7 +2,7 @@
 
 namespace EShop.Utility
 {
-    public class Class1
+    public class StringHelper
     {
     }
 }

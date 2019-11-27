@@ -17,6 +17,7 @@ namespace EShop.ProductCatalog.Domain.DAL
             builder.Entity<Product>().HasKey(t => t.Id);
             builder.Entity<Product>().Property(t => t.Id).HasColumnName("Id");
             builder.Entity<Product>().Property(t => t.Name).HasColumnName("Name");
+            builder.Entity<Product>().Property(t => t.Price).HasColumnName("Price");
         }
     }
 }

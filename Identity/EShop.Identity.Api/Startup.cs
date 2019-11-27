@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
 using EShop.Logging;
 using EShop.Identity.Domain.DAL;
+using EShop.Identity.Domain.Interfaces;
 
 namespace EShop.Identity.Api
 {
@@ -35,8 +36,9 @@ namespace EShop.Identity.Api
             services.AddDbContext<CustomerContext>(options =>
                 options.UseSqlServer(builder.ConnectionString)
             );
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
             // configure jwt authentication
-            var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("Secure"));
+            var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("Secret"));
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
