@@ -2,8 +2,21 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+import {NgxLoggerLevel} from 'ngx-logger';
+
 export const environment = {
-  production: false
+  production: false,
+
+  gateway: {
+    url: 'https://eshop-gateway-dev.azurewebsites.net'
+  },
+  appInsights: {
+    instrumentationKey: '5be4185c-dd72-4838-8e17-10bebe0fb94f'
+  },
+  configLog: {
+    level: NgxLoggerLevel.DEBUG,
+    serverLogLevel: NgxLoggerLevel.ERROR
+  }
 };
 
 /*

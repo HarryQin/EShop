@@ -1,0 +1,11 @@
+{
+  "gateway": {
+    "url": "http://localhost:7000"
+  },
+  "appInsights": {
+    "instrumentationKey": "5be4185c-dd72-4838-8e17-10bebe0fb94f"
+  },
+  "contentStack": {
+    "publishingEnvironment": "preview-test", "APIKey": "blt9e072702140c498e", "token": "csab556bc3015d72100b40665f"
+  }
+}

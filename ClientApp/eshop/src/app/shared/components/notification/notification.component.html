@@ -1,0 +1,87 @@
+<div class="modal-overlay" *ngIf="alertSvc.alerts.length>0">
+  <div class="modal" tabindex="-1" role="dialog">
+    <div *ngIf="(alertSvc.askConfirmation)" class="modal-dialog">
+      <div class="modal-content">
+        <div class="notification notification-warning">
+          <div class="notification-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><style>.fa-secondary{opacity:.4}</style></defs><path d="M256 8C119 8 8 119.08 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 376a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm38.24-238.41l-12.8 128A16 16 0 0 1 265.52 288h-19a16 16 0 0 1-15.92-14.41l-12.8-128A16 16 0 0 1 233.68 128h44.64a16 16 0 0 1 15.92 17.59z" class="fa-secondary"/><path d="M278.32 128h-44.64a16 16 0 0 0-15.92 17.59l12.8 128A16 16 0 0 0 246.48 288h19a16 16 0 0 0 15.92-14.41l12.8-128A16 16 0 0 0 278.32 128zM256 320a32 32 0 1 0 32 32 32 32 0 0 0-32-32z" class="fa-primary"/></svg>
+          </div>
+          <div class="notification-content">
+            <h4 *ngIf="alertSvc.notificationTitle">{{alertSvc.notificationTitle}}</h4>
+            <p class="">{{ alertSvc.alerts[0]?.text + ' '}}</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div *ngIf="alertSvc.actionType==='DELETE'">
+            <button class="cta-button sm" name="btnOK" (click)="clickOK()">{{'BUTTON.DELETE' | translate}}</button>
+            <button class="cta-button sm light" name="btnCancel" (click)="clickCancel()">{{'BUTTON.CANCEL' | translate}}</button>
+          </div>
+          <div *ngIf="alertSvc.actionType==='DEACTIVATE'">
+            <button class="cta-button sm" name="btnOK" (click)="clickOK()">{{'BUTTON.YES' | translate}}</button>
+            <button class="cta-button sm light" name="btnCancel" (click)="clickCancel()">{{'BUTTON.NO' | translate}}</button>
+          </div>
+          <div *ngIf="alertSvc.actionType==='NAVIGATE'">
+            <button class="cta-button sm light" name="btnOK" (click)="clickOK()">{{'BUTTON.OK_NAVIGATE_AWAY' | translate}}</button>
+            <button class="cta-button sm" name="btnCancel" (click)="clickCancel()">{{'BUTTON.CANCEL_NAVIGATE_AWAY' | translate}}</button>
+          </div>
+        </div>
+ 
+      </div>
+    </div>
+ 
+    <!-- <div *ngIf="(alert.askConfirmation)" class="modal-dialog" style="height: 100%; min-width: 768px;">
+      <div class="modal-content">
+        <div class="row  notification-warning notification">
+          <div class="col-lg-1">
+            <div style="margin-top:15px; margin-left:0px !important;">
+              <img src="/assets/img/warning-32.svg"
+                   style="height: 20px; width:20px;">
+            </div>
+          </div>
+          <div class="col-lg-11">
+            <div style="margin-top:15px; margin-bottom: 15px; margin-left:0px !important;">
+              <h4 *ngIf="alert.notificationTitle">{{alert.notificationTitle}}</h4>
+               <div class="alertMsg">
+                  {{ alert.alerts[0]?.text + ' '}}
+                </div>
+ 
+            </div>
+          </div>
+        </div>
+        <div class="row" style="margin-top: 20px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; background-color: #f6f6f6">
+          <div class="col-md-3 col-lg-3 col-sm-12">
+            <button class="cta-button sm" style="margin: 15px 30px 15px 30px" name="btnOK" (click)="clickOK()">
+              {{'BUTTON.DELETE' | translate}}
+            </button>
+          </div>
+          <div class="col-md-3 col-lg-3 col-sm-12">
+            <button class="cta-button sm light" style="margin: 15px 30px 15px 30px" name="btnCancel"
+                    (click)="clickCancel()">
+              {{'BUTTON.CANCEL' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div> -->
+ 
+    <div *ngIf="!(alertSvc.askConfirmation)" class="modal-dialog">
+      <div class="modal-content">
+ 
+        <div class="notification notification-warning">
+          <div class="notification-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><style>.fa-secondary{opacity:.4}</style></defs><path d="M256 8C119 8 8 119.08 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 376a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm38.24-238.41l-12.8 128A16 16 0 0 1 265.52 288h-19a16 16 0 0 1-15.92-14.41l-12.8-128A16 16 0 0 1 233.68 128h44.64a16 16 0 0 1 15.92 17.59z" class="fa-secondary"/><path d="M278.32 128h-44.64a16 16 0 0 0-15.92 17.59l12.8 128A16 16 0 0 0 246.48 288h19a16 16 0 0 0 15.92-14.41l12.8-128A16 16 0 0 0 278.32 128zM256 320a32 32 0 1 0 32 32 32 32 0 0 0-32-32z" class="fa-primary"/></svg>
+          </div>
+          <div class="notification-content">
+            <h4 *ngIf="alertSvc.notificationTitle">{{alertSvc.notificationTitle}}</h4>
+            <p class="">{{ alertSvc.alerts[0]?.text + ' '}}</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="cta-button sm" name="btnOK" (click)="closeAll()">{{'BUTTON.OK' | translate}}</button>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+</div>
+

@@ -3,11 +3,11 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "eshop": {
+    "ClientApp": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "sass"
+          "style": "scss"
         }
       },
       "root": "",
@@ -17,49 +17,76 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/eshop",
+            "outputPath": "dist/ClientApp",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": false,
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/web.config"
             ],
             "styles": [
-              "src/styles.sass"
+              "src/styles.scss",
+              "./node_modules/font-awesome/scss/font-awesome.scss"
             ],
-            "scripts": []
+            "stylePreprocessorOptions": {
+              "includePaths": ["./src/styles"]
+            }
+           
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
-                }
-              ],
+              "aot": true,
+              "baseHref": "/",
               "optimization": true,
               "outputHashing": "all",
+              "outputPath": "dist",
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
+              "assets": [
+                "src/assets",
+                "src/web.config"
+              ],
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "budgets": [
+              "fileReplacements": []
+            },
+            "dev": {
+              "aot": false,
+              "baseHref": "/",
+              "assets": [
+                "src/assets",
+                "src/web.config"
+              ],
+              "fileReplacements": [
                 {
-                  "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "replace": "src/assets/config/config.json",
+                  "with": "src/assets/config/config.dev.json"
                 }
+              ],
+              "scripts": [
+                "./node_modules/crypto-js/crypto-js.js"
+              ]
+            },
+            "debug": {
+              "aot": true,
+              "baseHref": "/",
+              "assets": [
+                "src/assets",
+                "src/web.config"
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/assets/config/config.json",
+                  "with": "src/assets/config/config.debug.json"
+                }
+              ],
+              "scripts": [
+                "./node_modules/crypto-js/crypto-js.js"
               ]
             }
           }
@@ -67,18 +94,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "eshop:build"
+            "browserTarget": "ClientApp:build"
           },
           "configurations": {
-            "production": {
-              "browserTarget": "eshop:build:production"
+            "dev": {
+              "browserTarget": "ClientApp:build:dev"
+            },
+            "debug": {
+              "browserTarget": "ClientApp:build:debug"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "eshop:build"
+            "browserTarget": "ClientApp:build"
           }
         },
         "test": {
@@ -89,13 +119,10 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/web.config"
             ],
-            "styles": [
-              "src/styles.sass"
-            ],
-            "scripts": []
+            "styles": ["src/styles.scss"]
           }
         },
         "lint": {
@@ -106,24 +133,23 @@
               "tsconfig.spec.json",
               "e2e/tsconfig.json"
             ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         },
         "e2e": {
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "eshop:serve"
+            "devServerTarget": "ClientApp:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "eshop:serve:production"
+              "devServerTarget": "ClientApp:serve:production"
             }
           }
         }
       }
-    }},
-  "defaultProject": "eshop"
+    }
+  },
+  "defaultProject": "ClientApp"
 }
