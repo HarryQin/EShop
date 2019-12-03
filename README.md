@@ -1,5 +1,9 @@
 EShop - Demo how to use .net core Micro services and Angular 8.
 =============================
+.net core 3.1
+angular 8
+jwt
+
 Setup the Database:
 1. Create a database EShop on localdb or sql server;
 2. run EShop\DBScripts\init.sql
