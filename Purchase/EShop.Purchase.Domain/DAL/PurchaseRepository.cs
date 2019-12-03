@@ -15,20 +15,14 @@ namespace EShop.Purchasing.Domain.DAL
         public PurchaseRepository(PurchaseContext context)
         {
             _context = context;
-        }
-        public int AddPurchase(Purchase purchase) 
-        {
-            _context.Add(purchase);
-            _context.SaveChanges();
-            return purchase.Id;
-        }
+        }     
         public Purchase GetPurchase(int id)
         {
             return _context.Purchases.Where(x => x.Id == id).First();
         }
         public List<Purchase> GetPurchases(int userId)
         {
-            var purchases = _context.Purchases.Where(x => x.UserId == userId);
+            var purchases = _context.Purchases.Where(x => x.UserId == userId && !x.IsDeleted);
             if (purchases.Count() == 0)
             {
                 return new List<Purchase>();
@@ -38,14 +32,21 @@ namespace EShop.Purchasing.Domain.DAL
                 return purchases.ToList();
             }
         }
-        public void DeletePurchase(int id)
+        public Purchase DeletePurchase(int id)
         {
-            var purchase = _context.Purchases.Where(x => x.Id == id && !x.IsDeleted).First();
+            var purchase = _context.Purchases.Where(x => x.Id == id && !x.IsDeleted).FirstOrDefault();
             if (purchase != null) 
             {
                 purchase.IsDeleted = true;
                 _context.SaveChanges();
             }
+            return purchase;
+        }
+        public Purchase AddPurchase(Purchase purchase) 
+        {
+            _context.Purchases.Add(purchase);
+            _context.SaveChanges();
+            return purchase;
         }
         public void Dispose()
         {

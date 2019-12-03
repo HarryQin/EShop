@@ -9,6 +9,7 @@ namespace EShop.Purchasing.Domain.Interfaces
     {
         Purchase GetPurchase(int id);
         List<Purchase> GetPurchases(int userId);
-        void DeletePurchase(int id);
+        Purchase DeletePurchase(int id);
+        Purchase AddPurchase(Purchase purchase);
     }
 }

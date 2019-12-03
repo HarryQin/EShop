@@ -50,5 +50,21 @@ namespace EShop.Purchasing.Api.Controllers
             }
             return Ok(purchases);
         }
+        [Route("Delete/{id}")]
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public ActionResult<bool> Delete(int id)
+        {
+            Purchase result = _repository.DeletePurchase(id);
+            return Ok(result);
+        }
+        [Route("Add")]
+        [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public ActionResult<bool> Add(Purchase purchase)
+        {
+            Purchase result = _repository.AddPurchase(purchase);
+            return Ok(result);
+        }
     }
 }
