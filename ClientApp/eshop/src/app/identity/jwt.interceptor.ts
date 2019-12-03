@@ -5,14 +5,14 @@ import { AuthenticationService } from './authentication.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { switchMap, finalize } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { StorageService } from '../shared/services/storage.service';
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
 
   constructor(
     private authService: AuthenticationService,
-    private storage: StorageService,
+    private storage: LocalStorageService,
     private router: Router
   ) { }
 

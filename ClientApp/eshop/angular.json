@@ -34,7 +34,6 @@
             "stylePreprocessorOptions": {
               "includePaths": ["./src/styles"]
             }
-           
           },
           "configurations": {
             "production": {
@@ -50,10 +49,15 @@
                 "src/assets",
                 "src/web.config"
               ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
-              "fileReplacements": []
             },
             "dev": {
               "aot": false,
@@ -64,8 +68,8 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "src/assets/config/config.json",
-                  "with": "src/assets/config/config.dev.json"
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
                 }
               ],
               "scripts": [
@@ -81,8 +85,8 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "src/assets/config/config.json",
-                  "with": "src/assets/config/config.debug.json"
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.debug.ts"
                 }
               ],
               "scripts": [

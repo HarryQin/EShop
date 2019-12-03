@@ -1,12 +1,21 @@
 import {EventEmitter, Injectable} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {AppNotificationsMSG} from '../configuration/commonSettings';
+
+export const AppNotificationsMSG = {
+  deletionQuestionMsg: 'Do you  really want to delete the record ?',
+  deletionTitle: 'Delete',
+  deletionConfirmationMsg: 'Record successfully deleted !',
+  saveConfirmedMsg: 'Record successfully updated !',
+  insertMSG: 'Record inserted successfully',
+  notificationTitle: 'Notification',
+  errorTitle: 'Error',
+  warningTitle: 'Warning'
+};
 
 export class Alert {
   constructor(public text: string, public type: string) {
   }
 }
-
 
 @Injectable({
   providedIn: 'root'

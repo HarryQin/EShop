@@ -1,8 +1,9 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
-import { StorageService } from '../shared/services/storage.service';
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import { environment } from '../../environments/environment';
 import { User } from '../shared/DTO/user';
 
@@ -11,10 +12,11 @@ export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
 
-    constructor(private http: HttpClient,
-      private storage: StorageService
+    constructor(
+      private http: HttpClient,
+      private storage: LocalStorageService
       ) {
-        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+        this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(this.storage.retrieve('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
     }
 
@@ -22,19 +24,29 @@ export class AuthenticationService {
         return this.currentUserSubject.value;
     }
 
-    login(username: string, password: string) {
-        return this.http.post<any>(`${environment.gateway}/identity-api/auth/authenticate`, { username, password })
+    login(email: string, pwd: string) {
+        const data = {
+            email: email,
+            password: pwd
+        };
+        const url = `${environment.gateway.url}/identity-api/auth/authenticate`;
+        console.log(url);
+        const httpOptions = {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/json'
+            })
+          };
+        return this.http.post<any>(url, data, httpOptions )
             .pipe(map(user => {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify(user));
+                this.storage.store('currentUser', JSON.stringify(user));
                 this.currentUserSubject.next(user);
+                console.log(user);
                 return user;
-            }));
+           }));
     }
-
     logout() {
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
+        this.storage.clear('currentUser');
         this.currentUserSubject.next(null);
     }
 }
