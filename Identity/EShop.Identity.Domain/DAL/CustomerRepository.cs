@@ -24,7 +24,7 @@ namespace EShop.Identity.Domain.DAL
         public Customer GetCustomerbyEmail(string email) 
         {
             var customer = _context.Customers
-                   .Where(q => q.Email.ToLower() == email.ToLower()).First();
+                   .Where(q => q.Email.ToLower() == email.ToLower()).FirstOrDefault();
 
             return customer;
         }

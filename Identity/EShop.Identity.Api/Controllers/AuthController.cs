@@ -49,9 +49,9 @@ namespace EShop.Identity.Api.Controller
             var customer = _customerRepository.GetCustomerbyEmail("Test1@test.com");
             return new ContentResult() { Content = "<html><body><h1>EShop.Identity.Api</h1></body></html>", ContentType = "text/html" };
         }
-        [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody]AuthModel model)
+        [Route("authenticate")]
+        [HttpPost]
+        public IActionResult Authenticate(AuthModel model)
         {
             var customer = Authenticate(model.Email, model.Password);
 
@@ -60,35 +60,49 @@ namespace EShop.Identity.Api.Controller
 
             return Ok(customer);
         }
+        [Authorize]
+        [Route("test")]
+        public IActionResult Test()
+        {
+            return new ContentResult() { Content = "<html><body><h1>EShop.Identity.Api</h1></body></html>", ContentType = "text/html" };
+        }
         public Customer Authenticate(string email, string password)
         {
-            var customer = _customerRepository.GetCustomerbyEmail(email.ToLower());
-            if (customer == null) 
-            {
-                return null;
-            }
-            if (customer.Password != password)
-            {
-                return null;
-            }
-            else 
-            {
-                // authentication successful so generate jwt token
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("Secure"));
-                var tokenDescriptor = new SecurityTokenDescriptor
+            try {
+                var customer = _customerRepository.GetCustomerbyEmail(email.ToLower());
+                if (customer == null)
                 {
-                    Subject = new ClaimsIdentity(new Claim[]
+                    return null;
+                }
+                if (customer.Password != password)
+                {
+                    return null;
+                }
+                else
+                {
+                    // authentication successful so generate jwt token
+                    var tokenHandler = new JwtSecurityTokenHandler();
+                    var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("Secret"));
+                    var tokenDescriptor = new SecurityTokenDescriptor
                     {
-                        new Claim(ClaimTypes.Email, customer.Email)
-                    }),
-                    Expires = DateTime.UtcNow.AddMinutes(30),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                customer.Token = tokenHandler.WriteToken(token);
-                customer.Password = "";
-                return customer;
+                        Subject = new ClaimsIdentity(new Claim[]
+                        {
+                            new Claim(ClaimTypes.Email, customer.Email),
+                            new Claim(ClaimTypes.NameIdentifier, customer.Id.ToString()),
+                            new Claim(ClaimTypes.Role, "Customer")
+                        }),
+                        Expires = DateTime.UtcNow.AddHours(3),
+                        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    };
+                    var token = tokenHandler.CreateToken(tokenDescriptor);
+                    customer.Token = tokenHandler.WriteToken(token);
+                    customer.Password = "";
+                    return customer;
+                }
+            }
+            catch (Exception ex) 
+            {
+                return null;
             }
         }
     }

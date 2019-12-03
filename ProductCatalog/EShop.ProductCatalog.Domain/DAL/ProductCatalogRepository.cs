@@ -7,11 +7,11 @@ using System.Text;
 
 namespace EShop.ProductCatalog.Domain.DAL
 {
-    public class ProductCatalogDemoRepository : IProductCatalogRepository, IDisposable
+    public class ProductCatalogRepository : IProductCatalogRepository, IDisposable
     {
         protected readonly ProductCatalogContext _context;
 
-        public ProductCatalogDemoRepository(ProductCatalogContext context)
+        public ProductCatalogRepository(ProductCatalogContext context)
         {
             _context = context;
         }

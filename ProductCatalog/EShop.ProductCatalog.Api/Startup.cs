@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +11,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using EShop.Logging;
+using EShop.ProductCatalog.Domain.DAL;
+using EShop.ProductCatalog.Domain.Interfaces;
 
 namespace EShop.ProductCatalog.Api
 {
@@ -27,6 +31,16 @@ namespace EShop.ProductCatalog.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCors();
+            services.AddSingleton(typeof(IEShopLogger<>), typeof(EShopLogger<>));
+
+            var builder = new SqlConnectionStringBuilder(
+                Configuration.GetConnectionString("Default"));
+
+            services.AddDbContext<ProductCatalogContext>(options =>
+                options.UseSqlServer(builder.ConnectionString)
+            );
+            services.AddScoped<IProductCatalogRepository, ProductCatalogRepository>();
 
         }
 

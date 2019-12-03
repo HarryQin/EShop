@@ -11,6 +11,8 @@ using System.Data.SqlClient;
 using EShop.Logging;
 using EShop.Identity.Domain.DAL;
 using EShop.Identity.Domain.Interfaces;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace EShop.Identity.Api
 {
@@ -45,15 +47,16 @@ namespace EShop.Identity.Api
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
             .AddJwtBearer(x =>
-            {
+            {              
                 x.RequireHttpsMetadata = false;
                 x.SaveToken = true;
                 x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = false,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
                 };
             });
 
@@ -75,8 +78,17 @@ namespace EShop.Identity.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
+            //app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
+            //{
+            //    ClientId = Configuration["ClientId"],
+            //    ClientSecret = Configuration["ClientSecret"],
+            //    Authority = Configuration["Authority"],
+            //    ResponseType = OpenIdConnectResponseType.Code,
+            //    GetClaimsFromUserInfoEndpoint = true
+            //});
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

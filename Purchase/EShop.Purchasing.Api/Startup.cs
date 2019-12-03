@@ -10,7 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Data.SqlClient;
 using EShop.Purchasing.Domain.DAL;
 using EShop.Purchasing.Domain.Interfaces;
-
+using System.Text;
+using Microsoft.IdentityModel.Logging;
 
 namespace EShop.Purchasing.Api
 {
@@ -37,32 +38,42 @@ namespace EShop.Purchasing.Api
                 options.UseSqlServer(builder.ConnectionString)
             );
             services.AddScoped<IPurchaseRepository, PurchaseRepository>();
-
-            services.AddAuthentication(options =>
+            var key = Encoding.ASCII.GetBytes(Configuration.GetValue<string>("Secret"));
+            services.AddAuthentication(x =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(o =>
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
             {
-                o.Authority = "http://localhost:5001";
-                o.Audience = "";
-                o.RequireHttpsMetadata = false;
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.IncludeErrorDetails = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = false,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                };
             });
-
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("ApiReader", policy => policy.RequireClaim("scope", "api.read"));
-            //    options.AddPolicy("Consumer", policy => policy.RequireClaim(ClaimTypes.Role, "consumer"));
-            //});
-
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+
+        //services.AddAuthorization(options =>
+        //{
+        //    options.AddPolicy("ApiReader", policy => policy.RequireClaim("scope", "api.read"));
+        //    options.AddPolicy("Consumer", policy => policy.RequireClaim(ClaimTypes.Role, "consumer"));
+        //});
+
+
+    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                IdentityModelEventSource.ShowPII = true;
             }
 
             app.UseRouting();

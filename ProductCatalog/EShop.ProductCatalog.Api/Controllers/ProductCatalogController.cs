@@ -12,7 +12,6 @@ using EShop.ProductCatalog.Domain.Models;
 
 namespace EShop.ProductCatalog.Api.Controllers
 {
-    [Authorize(Policy = "ApiReader")]
     [Route("Catalog-api/[controller]")]
     [ApiController]
     public class ProductCatalogController : ControllerBase
@@ -35,7 +34,7 @@ namespace EShop.ProductCatalog.Api.Controllers
             return new ContentResult() { Content = "<html><body><h1>EShop.ProductCatalog.Api</h1></body></html>", ContentType = "text/html" };
         }
         // GET api/values
-        [Authorize(Policy = "Consumer")]
+        [Route("GetAll")]
         [HttpGet]
         public ActionResult<List<Product>> GetAll()
         {
