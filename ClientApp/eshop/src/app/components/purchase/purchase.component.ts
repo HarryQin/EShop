@@ -47,10 +47,9 @@ import {
   export class PurchaseComponent implements OnInit, OnDestroy {
 
     loading = false;
-    purchases: Purchase[];
     subscription: Subscription = new Subscription();
     purchaseSource: MatTableDataSource < Purchase > ;
-    displayedColumns: string[] = ['Purchase Id', 'Product Id', 'User Id', 'Delete'];
+    displayedColumns: string[] = ['id', 'productId', 'userId', 'actions'];
 
     @ViewChild(MatPaginator, {
       static: false
@@ -73,8 +72,7 @@ import {
       this.loading = true;
       this.subscription = this.purchaseService.GetAll().subscribe(purchases => {
         this.loading = false;
-        this.purchases = purchases;
-        this.purchaseSource = new MatTableDataSource(this.purchases);
+        this.purchaseSource = new MatTableDataSource(purchases);
         this.cdr.detectChanges();
         this.purchaseSource.paginator = this.paginator;
         this.purchaseSource.sort = this.sort;
@@ -82,7 +80,15 @@ import {
 
       });
     }
-    ngOnDestroy() {}
+    ngOnDestroy() {
+      this.subscription.unsubscribe();
+    }
+    delete(data, event) {
+      event.stopPropagation();
+      this.purchaseService.Delete(data.id).subscribe(result => {
+          this.logger.debug(data.id);
+        });
+    }
     applyFilter(filterValue: string) {
         this.purchaseSource.filter = filterValue.trim().toLowerCase();
         if (this.purchaseSource.paginator) {

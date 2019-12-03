@@ -41,6 +41,7 @@ import {
 import {
   NGXLogger
 } from 'ngx-logger';
+import { Purchase } from 'src/app/shared/DTO/purchase';
 
 @Component({
   selector: 'app-products',
@@ -90,20 +91,24 @@ export class ProductsComponent implements OnInit, OnDestroy {
   }
   purchase(data, event) {
     event.stopPropagation();
-    if(this.authService.currentUserValue) {
-      this.purchaseService.Add(data.id, this.authService.currentUserValue.id).subscribe(data => {
-        this.logger.debug(data.purchaseId);
+    if (this.authService.currentUserValue) {
+      const purchase: Purchase = {
+        productId: data.id,
+        userId: this.authService.currentUserValue.id,
+        id: 0
+      };
+      this.purchaseService.Add(purchase).subscribe(result => {
+        this.logger.debug(result.id);
       });
-    }
-    else {
+    } else {
       this.router.navigate(['/login']);
     }
     console.log(data);
   }
   applyFilter(filterValue: string) {
-    this.productSource.filter = filterValue.trim().toLowerCase();
-    if (this.productSource.paginator) {
-      this.productSource.paginator.firstPage();
-    }
+      this.productSource.filter = filterValue.trim().toLowerCase();
+      if (this.productSource.paginator) {
+        this.productSource.paginator.firstPage();
+      }
   }
 }

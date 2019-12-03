@@ -21,20 +21,16 @@ export class PurchaseService {
       catchError(this.errorHandle)
     );
   }
-  Add(productId: number, customerId: number): Observable<Purchase> {
-    const data = {
-      product: productId,
-      custom: customerId
-  };
-    const url = `${this.baseUrl}/Add/`;
+  Add(purchase: Purchase): Observable<Purchase> {
+    const url = `${this.baseUrl}/Add`;
     const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json'
         })
       };
-    return this.http.post<any>(url, data, httpOptions );
+    return this.http.post<any>(url, purchase, httpOptions );
   }
-  Delete(id: string): Observable<Purchase[]> {
+  Delete(id: number): Observable<Purchase> {
     const url = `${this.baseUrl}/Delete/` + id;
     return this.http.get<any>(url)
     .pipe(
